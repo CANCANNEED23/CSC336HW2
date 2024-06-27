@@ -1,32 +1,79 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GPA Calculator</title>
     <style>
+        body {
+            background-color: #eee8d5;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        p {
+            text-align: center;
+        }
+
         table {
             width: 80%;
             border-collapse: collapse;
             margin: auto;
         }
-        th, td {
+        td {
             border: 1px solid black;
             padding: 10px;
             text-align: left;
             margin: auto;
+            background-color: white;
         }
+
         th {
-            background-color: #f2f2f2;
-            
+            background-color: #eee8d5;
+            border: 1px solid black;
+            padding: 10px;
+            text-align: left;
+            margin: auto;
+
         }
+
         input {
             box-sizing: border-box;
         }
+
+        button {
+            padding: 10px;
+            margin: 10px;
+            font-size: 16px;
+        }
+
+        .buttons-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            /* Adjust this value as needed */
+        }
+
+        #calculateGPA {
+            background-color: #1e8754;
+            color: white;
+        }
+
+        #reset {
+            background-color: #6c757d;
+            color: white;
+        }
+
     </style>
 </head>
+
 <body>
     <h1>GPA Calculator</h1>
+    <p>Enter your course details and select the courses you want to include in the GPA calculation.</p>
+    <p>The available letter grades are A, A-, down to F.</p>
     <table id="courseTable">
         <thead>
             <tr>
@@ -41,16 +88,18 @@
         </tbody>
     </table>
     <br>
-    <button onclick="addRow()"> + Add Row</button>
-    <button onclick="calculateGPA()"> = Calculate GPA</button>
-    <button onclick="resetTable()"> ❌ Reset</button>
+    <div class="buttons-container">
+        <button onclick="addRow()"> + Add Row</button>
+        <button id="calculateGPA" onclick="calculateGPA()"> = Calculate GPA</button>
+        <button id="reset" onclick="resetTable()"> ❌ Reset</button>
+    </div>
     <p id="gpaResult"></p>
 
     <script>
         function addRow() {
             const table = document.getElementById('courseTable').getElementsByTagName('tbody')[0];
             const newRow = table.insertRow();
-            
+
             const cell1 = newRow.insertCell(0);
             const cell2 = newRow.insertCell(1);
             const cell3 = newRow.insertCell(2);
@@ -61,7 +110,7 @@
             cell2.innerHTML = '<input type="number" placeholder="Credit" min="0" max="4">';
             cell3.innerHTML = '<input type="text" placeholder="Grade">';
             cell4.innerHTML = '<input type="checkbox">';
-            cell5.innerHTML = '<button onclick="deleteRow(this)">&times;</button>';
+            cell5.innerHTML = '<button onclick="deleteRow(this)" style="border: none; background: transparent;">&times;</button>';
         }
 
         function deleteRow(button) {
@@ -119,4 +168,5 @@
         }
     </script>
 </body>
+
 </html>
