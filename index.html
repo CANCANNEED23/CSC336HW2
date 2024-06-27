@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GPA Calculator</title>
+    <style>
+        table {
+            width: 80%;
+            border-collapse: collapse;
+            margin: auto;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 10px;
+            text-align: left;
+            margin: auto;
+        }
+        th {
+            background-color: #f2f2f2;
+            
+        }
+        input {
+            box-sizing: border-box;
+        }
+    </style>
+</head>
+<body>
+    <h1>GPA Calculator</h1>
+    <table id="courseTable">
+        <thead>
+            <tr>
+                <th>Course Name</th>
+                <th>Course Credit</th>
+                <th>Course Grade</th>
+                <th>Select</th>
+                <th>Delete</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+    <br>
+    <button onclick="addRow()"> + Add Row</button>
+    <button onclick="calculateGPA()"> = Calculate GPA</button>
+    <button onclick="resetTable()"> ❌ Reset</button>
+    <p id="gpaResult"></p>
+
+    <script>
+        function addRow() {
+            const table = document.getElementById('courseTable').getElementsByTagName('tbody')[0];
+            const newRow = table.insertRow();
+            
+            const cell1 = newRow.insertCell(0);
+            const cell2 = newRow.insertCell(1);
+            const cell3 = newRow.insertCell(2);
+            const cell4 = newRow.insertCell(3);
+            const cell5 = newRow.insertCell(4);
+
+            cell1.innerHTML = '<input type="text" placeholder="Name">';
+            cell2.innerHTML = '<input type="number" placeholder="Credit" min="0" max="4">';
+            cell3.innerHTML = '<input type="text" placeholder="Grade">';
+            cell4.innerHTML = '<input type="checkbox">';
+            cell5.innerHTML = '<button onclick="deleteRow(this)">&times;</button>';
+        }
+
+        function deleteRow(button) {
+            const row = button.parentNode.parentNode;
+            row.parentNode.removeChild(row);
+        }
+
+        function calculateGPA() {
+            const table = document.getElementById('courseTable').getElementsByTagName('tbody')[0];
+            const rows = table.getElementsByTagName('tr');
+            let totalCredits = 0;
+            let totalPoints = 0;
+
+            for (let i = 0; i < rows.length; i++) {
+                const cells = rows[i].getElementsByTagName('td');
+                const isSelected = cells[3].getElementsByTagName('input')[0].checked;
+                if (isSelected) {
+                    const credit = parseFloat(cells[1].getElementsByTagName('input')[0].value);
+                    const grade = cells[2].getElementsByTagName('input')[0].value.toUpperCase();
+                    const gradePoints = getGradePoints(grade);
+
+                    if (!isNaN(credit) && gradePoints !== null) {
+                        totalCredits += credit;
+                        totalPoints += credit * gradePoints;
+                    }
+                }
+            }
+
+            const gpa = totalCredits > 0 ? (totalPoints / totalCredits).toFixed(2) : 0;
+            document.getElementById('gpaResult').innerText = 'GPA: ' + gpa;
+        }
+
+        function getGradePoints(grade) {
+            switch (grade) {
+                case 'A': return 4.0;
+                case 'A-': return 3.7;
+                case 'B+': return 3.3;
+                case 'B': return 3.0;
+                case 'B-': return 2.7;
+                case 'C+': return 2.3;
+                case 'C': return 2.0;
+                case 'C-': return 1.7;
+                case 'D+': return 1.3;
+                case 'D': return 1.0;
+                case 'D-': return 0.7;
+                case 'F': return 0.0;
+                default: return null;
+            }
+        }
+
+        function resetTable() {
+            const table = document.getElementById('courseTable').getElementsByTagName('tbody')[0];
+            table.innerHTML = '';
+            document.getElementById('gpaResult').innerText = '';
+        }
+    </script>
+</body>
+</html>
